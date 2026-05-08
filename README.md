@@ -53,6 +53,12 @@ Run the sensor targeting a specific Docker container:
 sudo python3 sensor.py -c <container_name_or_id>
 ```
 
+The legacy `sensor.py` wrapper delegates to the package entrypoint. You can also run:
+
+```bash
+sudo python3 -m ebpf_threat_hunter -c <container_name_or_id>
+```
+
 ### Examples
 
 ```bash
@@ -152,6 +158,15 @@ The sensor consists of:
 3. **Cgroup Tracking**: Isolates monitoring to specific container processes
 4. **Ring Buffer**: Efficient data transfer between kernel and user space
 
+Package layout:
+
+- `sensor.py`: Backward-compatible wrapper
+- `ebpf_threat_hunter/cli.py`: CLI startup and BPF loading
+- `ebpf_threat_hunter/bpf_program.py`: Embedded eBPF C program
+- `ebpf_threat_hunter/events.py`: ctypes event structs and JSON event handling
+- `ebpf_threat_hunter/cgroup.py`: Docker cgroup resolver
+- `ebpf_threat_hunter/logging_utils.py`: JSON log emission
+
 ## Security Considerations
 
 - Requires root privileges for eBPF operations
@@ -182,7 +197,3 @@ The sensor consists of:
 ### Logs
 
 Check `ebpf_sensor.log` for detailed error messages and event logs.
-
-## Disclaimer
-
-This tool is for security research and monitoring purposes. Use responsibly and in compliance with applicable laws and regulations.
