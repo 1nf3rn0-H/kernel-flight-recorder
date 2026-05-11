@@ -135,20 +135,6 @@ To test the sensor:
 
 Observe the sensor detecting and logging the activities.
 
-## Sample Testing Output
-```json
-[*] Resolved Container 'detonation_zone' -> Full ID: 5ef6c847ee77... -> Cgroup ID: 16774
-[*] Compiling eBPF and tracing Cgroup ID 16774...
-[*] Ring Buffer Active. Hunting threats inside the container...
-{"timestamp": "2026-04-21T17:48:04.685800+00:00", "sensor_type": "ebpf_threat_hunter", "event_type": "EXECVE", "actor": {"pid": 15938, "process_name": "bash"}, "details": {"true_path": "./injector", "first_arg": ""}}
-{"timestamp": "2026-04-21T17:48:16.694266+00:00", "sensor_type": "ebpf_threat_hunter", "event_type": "PROCESS_VM_WRITEV", "actor": {"pid": 15938, "process_name": "injector"}, "target": {"pid": 31, "memory_address": "0xf4663415b000"}, "payload": {"bytes_injected": 18, "status": "extracted_from_source", "artifact_path": "/home/harsh/Desktop/Project/success/dump_injector_15938_0xaf3a4c7a0010.bin", "sha256": "32a15e53d9691dd2085e17c16d6eb66fbd344f30cf071ff3b39543c85d775f04"}}
-{"timestamp": "2026-04-21T17:48:35.971870+00:00", "sensor_type": "ebpf_threat_hunter", "event_type": "EXECVE", "actor": {"pid": 15990, "process_name": "bash"}, "details": {"true_path": "./fileless", "first_arg": ""}}
-{"timestamp": "2026-04-21T17:48:35.975324+00:00", "sensor_type": "ebpf_threat_hunter", "event_type": "MEMFD_CREATE", "actor": {"pid": 15990, "process_name": "fileless"}, "details": {"anonymous_file_name": "kthread_worker"}}
-{"timestamp": "2026-04-21T17:48:36.975077+00:00", "sensor_type": "ebpf_threat_hunter", "event_type": "EXECVE", "actor": {"pid": 15990, "process_name": "fileless"}, "details": {"true_path": "/proc/self/fd/3", "first_arg": ""}, "fileless_payload": {"status": "extracted", "artifact_path": "/home/harsh/Desktop/Project/success/dump_memfd_15990_fd3.bin", "sha256": "63da86ffdb115a56ccdc545f2eeadfded2ba2e2a13994f3ad89b264945d53bb2", "preview": "#!/bin/bash\necho '[!!!] Fileless payload executing"}}
-^C
-[*] Exiting...
-```
-
 ## Architecture
 
 The sensor consists of:
@@ -161,11 +147,11 @@ The sensor consists of:
 Package layout:
 
 - `sensor.py`: Backward-compatible wrapper
-- `ebpf_threat_hunter/cli.py`: CLI startup and BPF loading
-- `ebpf_threat_hunter/bpf_program.py`: Embedded eBPF C program
-- `ebpf_threat_hunter/events.py`: ctypes event structs and JSON event handling
-- `ebpf_threat_hunter/cgroup.py`: Docker cgroup resolver
-- `ebpf_threat_hunter/logging_utils.py`: JSON log emission
+- `kernel_flight_recorder/cli.py`: CLI startup and BPF loading
+- `kernel_flight_recorder/bpf_program.py`: Embedded eBPF C program
+- `kernel_flight_recorder/events.py`: ctypes event structs and JSON event handling
+- `kernel_flight_recorder/cgroup.py`: Docker cgroup resolver
+- `kernel_flight_recorder/logging_utils.py`: JSON log emission
 
 ## Security Considerations
 
